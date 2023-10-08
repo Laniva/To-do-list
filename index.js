@@ -1,5 +1,5 @@
 let toDos = [];
-let todoContainer = document.querySelector('.list-container');
+let todoContainer = document.querySelector('#list-wrap');
 
 
 const displayTodos = () => {
@@ -15,17 +15,16 @@ const displayTodos = () => {
             <form id='' class='edit-todo' action="">
                 <div class="label-wrap">
                     <label for="checkbox">
-                        <input class="checkbox" type="checkbox" name="checkbox" id=''>
+                        <input class="checkbox" type="checkbox" name="checkbox" id='checkbox'>
                     </label>
-                    <label for=''>
-                        <input class="input" type="text" name="add-item" id='' value="${todo.text}">
+                    <label for='add-item'>
+                        <input class="input" type="text" name="add-item" id='add-item' value="${todo.text}">
                     </label>
                 </div>
                 </form>
                 <button id= class="drag">remove</button>
         </li>
         `
-        todoContainer.innerHTML = result;
         return result;
     })
     todoContainer.innerHTML = result;
@@ -44,18 +43,21 @@ const addTodo = () => {
     todo.text = textInput.value
     toDos.push(todo)
     textInput.value = ''
-    console.log(todo)
    }
    for(let i=0; i<toDos.length; i++){
     toDos[i].id = i + 1
    }
-   localStorage.setItem('todo', JSON.stringify(toDos))
+   localStorage.setItem('todos', JSON.stringify(toDos))
+   console.log(toDos)
    displayTodos();
 }
 
 
-
-form.addEventListener('submit', () =>{
+window.addEventListener('DOMContentLoaded', () => {
+    displayTodos();
+})
+form.addEventListener('submit', (e) =>{
+    e.preventDefault();
     addTodo()
-    displayTodos()
+     
 })
