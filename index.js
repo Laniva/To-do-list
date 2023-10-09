@@ -15,14 +15,15 @@ const displayTodos = () => {
             <form id='' class='edit-todo' action="">
                 <div class="label-wrap">
                     <label for="checkbox">
-                        <input class="checkbox" type="checkbox" name="checkbox" id='checkbox'>
+                        <input onClick=showDeleteBtn(${todo.id}) class="checkbox" type="checkbox" name="checkbox" id=''>
                     </label>
-                    <label for='add-item'>
+                    <label for='add-item'> 
                         <input class="input" type="text" name="add-item" id='add-item' value="${todo.text}">
                     </label>
                 </div>
                 </form>
-                <button id= class="drag">remove</button>
+                <button onClick=editTodo(${todo.id}) id="" class="drag">edit</button>
+                <button onClick=deleteTodo(${todo.id}) id="${todo.id}" class="drag hide">remove</button>
         </li>
         `
         return result;
@@ -32,7 +33,8 @@ const displayTodos = () => {
 }
 
 let todo = {
-    text: ''
+    text: '',
+    completed: false
 }
 
 let form = document.querySelector('.form');
@@ -52,6 +54,34 @@ const addTodo = () => {
    displayTodos();
 }
 
+const deleteTodo = (id) => {
+    let todos = toDos.filter((item) => item.id !== id)
+    localStorage.setItem('todos', JSON.stringify(todos))
+    console.log(todos);
+    displayTodos()
+    return todos;
+}
+
+
+const showDeleteBtn = (id) => {
+    let deleteBtn = document.getElementById(id)
+    let todo = toDos.find((todo) => todo.id === id)
+    todo.completed = !todo.completed
+    deleteBtn.classList.toggle('hide')
+}
+
+const editTodo = (id) =>{
+    let editBtn = document.getElementById(id)
+    let todo = toDos.find((todo) => todo.id === id)
+    
+}
+
+const clearAll = () => {
+    let todos = toDos.filter((todo) => todo.completed === false)
+    localStorage.setItem('todos', JSON.stringify(todos))
+    displayTodos()
+    return todos;
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     displayTodos();

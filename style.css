@@ -100,21 +100,11 @@ body {
   background: transparent;
 }
 
-.list-item .drag {
-  opacity: 0.2;
+.list-item .hide{
+  display: none;
 }
-
-.list-item .drag:hover {
-  opacity: 1;
-  cursor: pointer;
-}
-
 .list-item .checkbox {
   margin-right: 0.7rem;
-}
-
-#submit {
-  transform: rotate(90deg);
 }
 
 .list-item .checkbox:hover,
