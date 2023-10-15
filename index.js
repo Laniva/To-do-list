@@ -4,7 +4,8 @@ let todoContainer = document.querySelector('#list-wrap');
 
 const displayTodos = () => {
     let result = '';
-
+    let saveChanges = document.querySelector('.save-changes')
+    saveChanges.classList.add('hide')
     let todos = JSON.parse(localStorage.getItem('todos'))
     if(todos){
         toDos = todos
@@ -13,29 +14,20 @@ const displayTodos = () => {
         result += `
         <li id='' class="list-item">
             <form id='' class='edit-todo' action="">
-                <div class="label-wrap">
-              <div class="edit-todo hide" data-id="${todo.id + 1}">
-                <label for='edit-item'> 
-                  <input class="input" type="text" name="edit-item" value="${todo.text}">
-                </label>
-                  <button id="${todo.id}">Update</button>
-              </div>              
-                    <div class="todo-item">
+                <div class="label-wrap"> 
+                     
                      <label for="checkbox">
-                      <input onClick=showDeleteBtn(${todo.id}) class="checkbox" type="checkbox" name="checkbox" id=''>
+                      <input onClick=showDeleteBtn(${todo.id}) class="checkbox" type="checkbox" name="checkbox" id='checkbox'>
                      </label>
-                      <label for='add-item'> 
-                    <input class="input" type="text" name="add-item" id='add-item' data-id="${todo.id}" value="${todo.text}">
+                      <label for='todo'> 
+                    <input class="input" type="text" name="add-item" id='todo' data-id="${todo.id}" value="${todo.text}">
                 </label>
-                    </div>
+                    
                 </div>
             </form>
-                 <div class="settings">
-                  <ul class="menu">
-                    <li onClick=showEditInput() id="" class="drag">Edit</li>
-                    <li onClick=deleteTodo(${todo.id}) id="${todo.id}" class="drag hide">Remove</li>
-                  </ul>
-                 </div>
+            <button onClick=editTodo(${todo.id}) id="" class="drag">edit</button>
+            <button onClick=deleteTodo(${todo.id}) id="${todo.id}" class="drag hide">remove</button>
+
         </li>
         `
         return result;
@@ -81,16 +73,17 @@ const showDeleteBtn = (id) => {
     deleteBtn.classList.toggle('hide')
 }
 
-// const editTodo = (id) =>{
-//     let editBtn = document.getElementById(id)
-//     let todo = toDos.find((todo) => todo.id === id)
-//     let input = document.querySelector(`[data-id=${id}]`)
-//     if(input.value.length !== 0){
-//         todo.text = input.value;
-//         localStorage.setItem('todos', JSON.stringify(toDos))
-//         displayTodos()
-//     }
-// }
+const editTodo = (id) =>{
+    let todo = toDos.find((todo) => todo.id === id)
+    let saveChanges = document.querySelector('.save-changes')
+    saveChanges.classList.toggle('hide')
+    let input = document.querySelector(`[data-id="${id}"]`)
+    input.style.border = '1px solid red';
+    if(input.value.length !== 0){
+        todo.text = input.value;
+        localStorage.setItem('todos', JSON.stringify(toDos))
+    }
+}
 
 // const editTodo = (id) => {
 //     let editBtn = document.getElementById(id);
@@ -98,11 +91,11 @@ const showDeleteBtn = (id) => {
 //     return textInput.value = todo.text;
 // }
 
-//const showEditInput = () => {
+const showEditInput = () => {
     // let input = document.querySelector(`[data-id=${id + 1}]`)
     // input.classList.toggle('hide');
-    //console.log("click");
-//}
+    console.log("click");
+}
 
 const clearAll = () => {
     let todos = toDos.filter((todo) => todo.completed === false)
