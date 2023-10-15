@@ -98,11 +98,11 @@ const showDeleteBtn = (id) => {
 //     return textInput.value = todo.text;
 // }
 
-const showEditInput = () => {
+//const showEditInput = () => {
     // let input = document.querySelector(`[data-id=${id + 1}]`)
     // input.classList.toggle('hide');
-    console.log("click");
-}
+    //console.log("click");
+//}
 
 const clearAll = () => {
     let todos = toDos.filter((todo) => todo.completed === false)
