@@ -1,5 +1,6 @@
 let toDos = [];
 let todoContainer = document.querySelector('#list-wrap');
+let countEl = document.querySelector('#count');
 
 
 const displayTodos = () => {
@@ -32,6 +33,7 @@ const displayTodos = () => {
         return result;
     })
     todoContainer.innerHTML = result;
+    countEl.innerHTML = toDos.length;
     return result;
 }
 
@@ -111,6 +113,6 @@ window.addEventListener('DOMContentLoaded', () => {
  
 form.addEventListener('submit', (e) =>{
     e.preventDefault();
-    addTodo()
+    addTodo();
      
 })
