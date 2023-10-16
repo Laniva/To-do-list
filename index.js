@@ -1,10 +1,10 @@
 let toDos = [];
 let todoContainer = document.querySelector('#list-wrap');
+let countEl = document.querySelector('#count');
 
 
 const displayTodos = () => {
     let result = '';
-
     let todos = JSON.parse(localStorage.getItem('todos'))
     if(todos){
         toDos = todos
@@ -13,22 +13,27 @@ const displayTodos = () => {
         result += `
         <li id='' class="list-item">
             <form id='' class='edit-todo' action="">
-                <div class="label-wrap">
-                    <label for="checkbox">
-                        <input onClick=showDeleteBtn(${todo.id}) class="checkbox" type="checkbox" name="checkbox" id=''>
-                    </label>
-                    <label for='add-item'> 
-                        <input class="input" type="text" name="add-item" id='add-item' value="${todo.text}">
-                    </label>
+                <div class="label-wrap"> 
+                     
+                     <label for="checkbox">
+                      <input onClick=showDeleteBtn(${todo.id}) class="checkbox" type="checkbox" name="checkbox" id='checkbox'>
+                     </label>
+                      <label for='todo'> 
+                    <input class="input" type="text" name="add-item" data-id="${todo.id}" value="${todo.text}">
+                </label>
+                    
                 </div>
-                </form>
-                <button onClick=editTodo(${todo.id}) id="" class="drag">edit</button>
-                <button onClick=deleteTodo(${todo.id}) id="${todo.id}" class="drag hide">remove</button>
+            </form>
+            <button onClick=showEditing(${todo.id})  class="drag edit" data-edit="${todo.id}">edit</button>
+            <button onClick=editTodo(${todo.id})  class="drag update hide" data-update="${todo.id}">update</button>
+            <button onClick=deleteTodo(${todo.id}) id="${todo.id}" class="drag hide">remove</button>
+
         </li>
         `
         return result;
     })
     todoContainer.innerHTML = result;
+    countEl.innerHTML = toDos.length;
     return result;
 }
 
@@ -43,7 +48,7 @@ let textInput = document.querySelector('#add-item');
 const addTodo = () => {
    if(textInput.value.length !== 0){
     todo.text = textInput.value
-    toDos.push(todo)
+    toDos.push(todo);
     textInput.value = ''
    }
    for(let i=0; i<toDos.length; i++){
@@ -57,11 +62,9 @@ const addTodo = () => {
 const deleteTodo = (id) => {
     let todos = toDos.filter((item) => item.id !== id)
     localStorage.setItem('todos', JSON.stringify(todos))
-    console.log(todos);
     displayTodos()
     return todos;
 }
-
 
 const showDeleteBtn = (id) => {
     let deleteBtn = document.getElementById(id)
@@ -69,12 +72,33 @@ const showDeleteBtn = (id) => {
     todo.completed = !todo.completed
     deleteBtn.classList.toggle('hide')
 }
-
-const editTodo = (id) =>{
-    let editBtn = document.getElementById(id)
+ 
+// Edit Todo
+const showEditing = (id) => {
     let todo = toDos.find((todo) => todo.id === id)
-    
+    let updateBtn = document.querySelector(`[data-update="${todo.id}"]`)
+    let editBtn = document.querySelector(`[data-edit="${todo.id}"]`)
+    let input = document.querySelector(`[data-id="${todo.id}"]`)
+    input.style.border = "1px solid red";
+    updateBtn.classList.toggle('hide')
+    editBtn.classList.toggle('hide')
+    console.log(input)
+    console.log(updateBtn)
 }
+const editTodo = (id) =>{
+    let todo = toDos.find((todo) => todo.id === id)
+    let updateBtn = document.querySelector(`[data-update="${todo.id}"]`)
+    let editBtn = document.querySelector(`[data-edit="${todo.id}"]`)
+    let input = document.querySelector(`[data-id="${todo.id}"]`)
+    if(input.value.length !== 0){
+        todo.text = input.value;
+        localStorage.setItem('todos', JSON.stringify(toDos))
+    }
+    updateBtn.classList.toggle('hide')
+    editBtn.classList.toggle('hide')
+    displayTodos()
+}
+
 
 const clearAll = () => {
     let todos = toDos.filter((todo) => todo.completed === false)
@@ -82,12 +106,13 @@ const clearAll = () => {
     displayTodos()
     return todos;
 }
-
+ 
 window.addEventListener('DOMContentLoaded', () => {
     displayTodos();
 })
+ 
 form.addEventListener('submit', (e) =>{
     e.preventDefault();
-    addTodo()
+    addTodo();
      
 })
